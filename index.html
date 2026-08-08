@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="计算手机、电脑等贵重物品平均每天花费多少的小工具。">
+  <title>日均花费计算器</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💸</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <h1>💸 日均花费计算器</h1>
+      <p class="subtitle">算算你的贵重物品，平均每天花掉多少钱</p>
+    </header>
+
+    <main>
+      <section class="card" id="formSection">
+        <h2 id="formTitle">添加物品</h2>
+        <form id="itemForm" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">名称 <span class="required">*</span></label>
+              <input type="text" id="name" placeholder="例如：手机" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="category">类别</label>
+              <input type="text" id="category" list="categoryOptions" placeholder="数码 / 家电 / 服饰 / 其他" autocomplete="off">
+              <datalist id="categoryOptions">
+                <option value="数码"></option>
+                <option value="家电"></option>
+                <option value="服饰"></option>
+                <option value="其他"></option>
+              </datalist>
+            </div>
+            <div class="field">
+              <label for="price">价格（元） <span class="required">*</span></label>
+              <input type="number" id="price" min="0.01" step="0.01" placeholder="例如：3000" inputmode="decimal">
+            </div>
+            <div class="field">
+              <label for="purchaseDate">购买日期 <span class="required">*</span></label>
+              <input type="date" id="purchaseDate">
+            </div>
+            <div class="field">
+              <label for="endDate">截止日期 <span class="optional">（留空 = 今天）</span></label>
+              <input type="date" id="endDate">
+            </div>
+          </div>
+          <p class="error" id="formError" role="alert" hidden></p>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn">添加</button>
+            <button type="button" class="btn btn-ghost" id="cancelEditBtn" hidden>取消编辑</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card" id="listSection">
+        <h2>我的物品 <span class="count-badge" id="itemCount">0</span></h2>
+        <div class="empty-state" id="emptyState">
+          <span class="empty-emoji">🛍️</span>
+          还没有任何记录，添加第一件物品，看看它每天花掉你多少钱吧。
+        </div>
+        <ul class="item-list" id="itemList"></ul>
+      </section>
+
+      <section class="card" id="chartSection" hidden>
+        <h2>日均花费对比</h2>
+        <div class="chart" id="chart"></div>
+      </section>
+
+      <section class="card">
+        <h2>数据管理</h2>
+        <p class="hint">记录只保存在本机浏览器中。换设备或清理浏览器数据前，建议先导出备份。</p>
+        <div class="settings-actions">
+          <button type="button" class="btn btn-secondary" id="exportBtn">导出数据</button>
+          <label class="btn btn-secondary file-btn" for="importInput">导入数据</label>
+          <input type="file" id="importInput" accept=".json,application/json" hidden>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>数据仅保存在你的浏览器中 · 不会上传到任何服务器</p>
+    </footer>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">确认</h3>
+      <p id="modalMessage"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="modalCancel">取消</button>
+        <button type="button" class="btn btn-danger" id="modalConfirm">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice" id="notice" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
